@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * 排序算法总结
  */
-public class Sort {
+public class BubbleSort {
     public static void main(String[] args) {
         int[] array = new int[]{33, 42, 1, 44, 4, 63, 3, 32};
         System.out.println(Arrays.toString(bubbleSort(array)));
