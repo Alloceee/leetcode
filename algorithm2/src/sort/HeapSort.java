@@ -10,33 +10,65 @@ public class HeapSort {
     }
 
     private static void heapSort(int[] arr) {
-        buildMaxHeap(arr);
-        //进行n-1次循环，完成排序
-        for (int i = arr.length-1;i>0;i--){
-            //最后一个元素和第一个元素进行交换
-            int temp = arr[i];
-            arr[i] = arr[0];
-            arr[0] = temp;
-            //筛选R[0]结点，得到i-1个结点的堆 将arr中前i-1个记录重新调整为大顶堆
-            heapAdjust(arr,0,i);
+        for (int i = 0; i < arr.length; i++) {
+            //每次建堆就可以排除一个元素了
+            buildMaxHeap(arr, arr.length - i);
+            //交换
+            int temp = arr[0];
+            arr[0] = arr[(arr.length - 1) - i];
+            arr[(arr.length - 1) - i] = temp;
         }
     }
 
     /**
-     * 堆调整
-     * @param arr
-     * @param i
-     * @param i1
+     * 建堆
+     *
+     * @param arr          看作是完全二叉树
+     * @param parent       当前父节点位置
+     * @param length       节点总数
      */
-    private static void heapAdjust(int[] arr, int i, int i1) {
+    private static void heapAdjust(int[] arr, int parent, int length) {
+        if (parent < length) {
+            //左子树和右字数的位置
+            int left = 2 * parent + 1;
+            int right = 2 * parent + 2;
+
+            //把当前父节点位置看成是最大的
+            int max = parent;
+
+            if (left < length) {
+                //如果比当前根元素要大，记录它的位置
+                if (arr[max] < arr[left]) {
+                    max = left;
+                }
+            }
+            if (right < length) {
+                //如果比当前根元素要大，记录它的位置
+                if (arr[max] < arr[right]) {
+                    max = right;
+                }
+            }
+            //如果最大的不是根元素位置，那么就交换
+            if (max != parent) {
+                int temp = arr[max];
+                arr[max] = arr[parent];
+                arr[parent] = temp;
+
+                //继续比较，直到完成一次建堆
+                heapAdjust(arr, max, length);
+            }
+        }
 
     }
 
     /**
-     * 构建大顶堆
-     * @param arr
+     *  完成一次建堆，最大值在堆的顶部(根节点)
+     *
      */
-    private static void buildMaxHeap(int[] arr) {
-
+    private static void buildMaxHeap(int[] arr, int size) {
+        // 从数组的尾部开始，直到第一个元素(角标为0)
+        for (int i = size - 1; i >= 0; i--) {
+            heapAdjust(arr, i, size);
+        }
     }
 }
